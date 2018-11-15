@@ -1,0 +1,54 @@
+Codigo ensayo para poder probar sensor de polucion con Arduino UNO y tome datos
+
+
+int measurePin = 0;
+int ledPower = 12;
+
+
+int samplingTime = 280;
+int deltaTime = 40;
+int sleepTime = 9680;
+
+
+float voMeasured = 0;
+float calcVoltage = 0;
+float dustDensity = 0;
+float pm05=0;
+
+
+void setup(){
+Serial.begin(9600);
+pinMode(ledPower,OUTPUT);
+}
+
+void loop(){
+digitalWrite(ledPower,LOW); 
+delayMicroseconds(samplingTime);
+
+voMeasured = analogRead(measurePin);
+
+delayMicroseconds(deltaTime);
+digitalWrite(ledPower,HIGH); 
+delayMicroseconds(sleepTime);
+
+calcVoltage = 5*voMeasured/1024;
+
+// ecuacion tomada de http://www.howmuchsnow.com/arduino/airquality/
+
+dustDensity = 0.17 * calcVoltage - 0.1;
+
+// Ecuacion linear de PM 2.5
+
+pm05=(calcVoltage-0.0356)*120000;
+
+Serial.print("Señal sin procesar (0-1023): ");
+Serial.print(voMeasured);
+Serial.print(" - Voltaje: ");
+Serial.print(calcVoltage);
+Serial.print(" - Densidad del Polvo(mg/m3): ");
+Serial.println(dustDensity);
+Serial.print(" - PM 0.5(particulas/0.01 pie3): ");
+Serial.println(pm05);
+delay(1000);
+
+}

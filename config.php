@@ -1,21 +1,13 @@
-<?php 
-	function Conectar(){
-		$conn=null;
-		$host='127.0.0.1';
-		$db='integracion';
-		$user='root';
-		$pwd='';
-		try{
+<?php
+$user = "polucion";
+$password = "Polucion2018";
+$dbname = "polucion";
+$port = "5432";
+$host = "db.inf.uct.cl";
 
-			$conn = new PDO('mysql:host='.$host.';dbname='.$db,$user,$pwd);
-		}catch(PDOExection $e){
-			echo ':(error al conectar la base de datos'.$e;
-			exit;
-		}
+$cadenaConexion = "host=$host port=$port dbname=$dbname user=$user password=$password";
 
-		return $conn;
-	}
-
+$conexion = pg_connect($cadenaConexion) or die("Error".pg_last_error());
 
 
  ?>
